@@ -4,11 +4,11 @@ import 'package:coffeeproject/core/Riverpod/homescreen_provider.dart';
 import 'package:coffeeproject/core/Riverpod/imagepicker_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 
 import 'package:uuid/uuid.dart';
 
+import '../../core/Riverpod/selectcategory_provider.dart';
 import '../../widgets/custom_text.dart';
 
 // ignore: must_be_immutable
@@ -27,11 +27,12 @@ class _AddNewProductScreenState extends ConsumerState<AddNewProductScreen> {
   TextEditingController priceController = TextEditingController();
   TextEditingController ratingController = TextEditingController();
   String? downloadUrl;
-   final now_date = DateFormat('d - M - yyyy ').format(DateTime.now());
+  //  final now_date = DateFormat('d - M - yyyy ').format(DateTime.now());
+  //String selectedCategory = "Arabica";
   @override
   Widget build(BuildContext context) {
     final selectimage = ref.watch(imageProvider);
-
+    final selectcategory=ref.watch(selectedCategoryProvider);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -50,23 +51,34 @@ class _AddNewProductScreenState extends ConsumerState<AddNewProductScreen> {
           child: Column(
             children: [
               Container(
-                  margin: const EdgeInsets.only(left: 23, right: 16, top: 24),
-                  child: TextField(
-                    autofocus: true,
-                    style: const TextStyle(color: Colors.white),
-                    keyboardType: TextInputType.name,
-                    controller: categoryController,
-                    //maxLength: 400,
-                    decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.black,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide.none),
-                        hintText: 'Enter Category',
-                        hintStyle:
-                            const TextStyle(color: Colors.white, fontSize: 12)),
-                  )),
+                margin: const EdgeInsets.only(left: 23, right: 16, top: 24),
+            
+                child: DropdownButton<String>(
+               
+                  value: selectcategory, // Currently selected category
+                  onChanged: (newValue) {
+                    setState(() {
+                      ref.read(selectedCategoryProvider.notifier).setSelectedCategory(newValue!);
+                    });
+                  },
+                  items: <String>[
+                    'Arabica',
+                    'Robusta',
+                    'Excelsa',
+                    'Liberica'
+                  ]
+                      .map<DropdownMenuItem<String>>(
+                        (String value) => DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value,
+                              style: TextStyle(color: Colors.black)),
+                        ),
+                      )
+                      .toList(),
+                
+                  ),
+                ),
+             
               Container(
                   margin: const EdgeInsets.only(left: 23, right: 16, top: 24),
                   child: TextField(
@@ -146,7 +158,6 @@ class _AddNewProductScreenState extends ConsumerState<AddNewProductScreen> {
                     borderRadius: BorderRadius.circular(50)),
                 child: TextButton(
                   onPressed: () async {
-                
                     downloadUrl =
                         await ref.read(imageProvider.notifier).imagePicker();
                   },
@@ -184,52 +195,25 @@ class _AddNewProductScreenState extends ConsumerState<AddNewProductScreen> {
                   onPressed: () {
                     var Randomid = Uuid().v1();
                     Product newproduct = Product(
-                      category: categoryController.text,
+                      category: selectcategory,
                       title: titleController.text,
                       price: priceController.text,
                       description: descriptionController.text,
                       rating: ratingController.text,
                       id: Randomid,
                       image: downloadUrl!,
-                      date:DateTime.now(),
+                      date: DateTime.now(),
                     );
                     ref
                         .read(homescreenprovider.notifier)
                         .addProduct(newproduct);
                     Navigator.pop(context);
-                    // if (widget.student != null) {
-                    //   Students newStudent = Students(
-                    //     Id: widget.student?.Id ?? '',
-                    //     name: nameController.text,
-                    //     age: int.parse(AgeController.text),
-                    //     rollno: int.parse(RollnoController.text),
-                    //     image: idController.text,
-                    //   );
-                    //   widget.provider.update(newStudent);
-                    //    widget.provider.updateStudentToFirebase(newStudent);
-                  }
-                  // else {
-                  //   Students newStudent = Students(
-                  //     name: nameController.text,
-                  //     rollno: int.parse(RollnoController.text),
-                  //     age: int.parse(AgeController.text),
-                  //     Id: const Uuid().v1(),
-                  //     image: idController.text,
-                  // )
-                  // widget.provider.addStudents(newStudent);
-                  // widget.provider.addStudentToFirebase(newStudent);
-                  // }
-                  // Navigator.pop(context);
-
-                  ,
+                  },
                   style: ElevatedButton.styleFrom(
                     alignment: Alignment.center,
-                    // backgroundColor: Colors.blue,
                   ),
                   child: const Text(
-                    //(widget.student == null)
                     'Add product',
-                    // : 'Update Student',
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
