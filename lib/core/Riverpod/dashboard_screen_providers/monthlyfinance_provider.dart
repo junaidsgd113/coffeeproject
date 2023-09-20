@@ -1,7 +1,6 @@
+import 'package:coffeeproject/screens/dashboard_screen/sfcartesian_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../screens/dashboard_screen/dashboard_screen.dart';
 import '../../Service/firebase_service.dart';
 import '../../models/product/product.dart';
 import 'dashboardscreenstate_providers.dart';

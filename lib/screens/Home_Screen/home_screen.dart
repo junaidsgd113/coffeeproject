@@ -9,9 +9,9 @@ import '../detail_screen/deatail_screen.dart';
 import 'advertisement_card.dart';
 import 'appbar_text.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
-
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _HomeScreenState();
 }
@@ -23,11 +23,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) async {
-        await ref
-            .read(homeScreenProvider.notifier)
-            .fetchProducts();
-             await ref.read(categoryScreenProvider.notifier).fetchCategorys();
-  
+        await ref.read(homeScreenProvider.notifier).fetchProducts();
+        await ref.read(categoryScreenProvider.notifier).fetchCategorys();
       },
     );
   }
@@ -39,38 +36,38 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       child: Scaffold(
         floatingActionButton: SpeedDial(
           backgroundColor: Colors.blueGrey,
-            animatedIcon: AnimatedIcons.menu_close,
-      children: [
-         SpeedDialChild(
-          child: Icon(Icons.add),
-           backgroundColor: Colors.blueGrey,
-          labelBackgroundColor:Colors.blueGrey, 
-          labelStyle: TextStyle(color: Colors.white,fontWeight: FontWeight.w500),
-          label: 'Add Product',
-          onTap: () {
-             Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => AddNewProductScreen()));
-          },
-        ),
-        SpeedDialChild(
-          child: Icon(Icons.category),
-          label: 'Add Category',
-          backgroundColor: Colors.blueGrey,
-          labelBackgroundColor:Colors.blueGrey, 
-          labelStyle: TextStyle(color: Colors.white,fontWeight: FontWeight.w500),
-          onTap: () {
-             Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => AddNewCategoryScreen()));
-          },
-        ),
-       
-      ],
-             
+          animatedIcon: AnimatedIcons.menu_close,
+          children: [
+            SpeedDialChild(
+              child: const Icon(Icons.add),
+              backgroundColor: Colors.blueGrey,
+              labelBackgroundColor: Colors.blueGrey,
+              labelStyle: const TextStyle(
+                  color: Colors.white, fontWeight: FontWeight.w500),
+              label: 'Add Product',
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AddNewProductScreen()));
+              },
             ),
+            SpeedDialChild(
+              child: const Icon(Icons.category),
+              label: 'Add Category',
+              backgroundColor: Colors.blueGrey,
+              labelBackgroundColor: Colors.blueGrey,
+              labelStyle: const TextStyle(
+                  color: Colors.white, fontWeight: FontWeight.w500),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AddNewCategoryScreen()));
+              },
+            ),
+          ],
+        ),
         body: Padding(
           padding: const EdgeInsets.only(bottom: 10.0),
           child: CustomScrollView(
@@ -98,7 +95,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             ),
                             TextField(
                               style: const TextStyle(color: Colors.white),
-                              // autofocus: true,
                               controller: textEditingController,
                               onChanged: (value) {
                                 ref
@@ -290,7 +286,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .fromLTRB(
+                                                                .fromLTRB(
                                                                 0, 2, 0, 0),
                                                         child: Text(
                                                           homeprovider[index]
@@ -354,7 +350,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                                     Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 right: 8.0),
                                                         child: SizedBox(
                                                             width: 30,

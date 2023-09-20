@@ -1,7 +1,6 @@
+import 'package:coffeeproject/screens/dashboard_screen/sfcartesian_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../screens/dashboard_screen/dashboard_screen.dart';
 import '../../models/product/product.dart';
  final fectchProductsYearStateprovider = StateProvider<List<Product>>((ref) => []);
 final fectchProductsStateprovider = StateProvider<List<Product>>((ref) => []);
