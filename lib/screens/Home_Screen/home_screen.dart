@@ -1,12 +1,14 @@
-import 'package:coffeeproject/core/Riverpod/homescreen_provider.dart';
-import 'package:coffeeproject/screens/AddNewProduct_screen/addproduct_screen.dart';
+import 'package:coffeeproject/core/riverpod/homescreen_provider.dart';
+import 'package:coffeeproject/screens/addProduct_screen/addproduct_screen.dart';
+import 'package:coffeeproject/screens/category_screen/addcategory_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../core/Model/productmodel.dart';
-import '../Detail_Screen/deatail_screen.dart';
+import '../../core/models/product/product.dart';
+import '../../core/riverpod/categoryscreen_provider.dart';
+import '../detail_screen/deatail_screen.dart';
 import 'advertisement_card.dart';
 import 'appbar_text.dart';
-
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
@@ -21,23 +23,54 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) async {
-        await ref.read(homescreenprovider.notifier).fetchtaskfromfirestoredb();
+        await ref
+            .read(homeScreenProvider.notifier)
+            .fetchProducts();
+             await ref.read(categoryScreenProvider.notifier).fetchCategorys();
+  
       },
     );
   }
 
+  @override
   Widget build(BuildContext context) {
-    List<Product> homeprovider = ref.watch(homescreenprovider);
+    List<Product> homeprovider = ref.watch(homeScreenProvider);
     return SafeArea(
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-            child: const Text('Add'),
-            onPressed: () {
-              Navigator.push(
+        floatingActionButton: SpeedDial(
+          backgroundColor: Colors.blueGrey,
+            animatedIcon: AnimatedIcons.menu_close,
+      children: [
+         SpeedDialChild(
+          child: Icon(Icons.add),
+           backgroundColor: Colors.blueGrey,
+          labelBackgroundColor:Colors.blueGrey, 
+          labelStyle: TextStyle(color: Colors.white,fontWeight: FontWeight.w500),
+          label: 'Add Product',
+          onTap: () {
+             Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => AddNewProductScreen()));
-            }),
+          },
+        ),
+        SpeedDialChild(
+          child: Icon(Icons.category),
+          label: 'Add Category',
+          backgroundColor: Colors.blueGrey,
+          labelBackgroundColor:Colors.blueGrey, 
+          labelStyle: TextStyle(color: Colors.white,fontWeight: FontWeight.w500),
+          onTap: () {
+             Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AddNewCategoryScreen()));
+          },
+        ),
+       
+      ],
+             
+            ),
         body: Padding(
           padding: const EdgeInsets.only(bottom: 10.0),
           child: CustomScrollView(
@@ -64,13 +97,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               height: 30,
                             ),
                             TextField(
-                               style: const TextStyle(color: Colors.white),
-                             // autofocus: true,
+                              style: const TextStyle(color: Colors.white),
+                              // autofocus: true,
                               controller: textEditingController,
                               onChanged: (value) {
                                 ref
-                                    .read(homescreenprovider.notifier)
-                                    .fetchtaskfromfirestoredb(query: value);
+                                    .read(homeScreenProvider.notifier)
+                                    .searchProducts(value);
                               },
                               decoration: InputDecoration(
                                   prefixIcon: const Icon(
@@ -82,7 +115,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(30),
                                       borderSide: BorderSide.none),
-                                  hintText: 'Search Coffee...',
+                                  hintText: 'Search Products...',
                                   hintStyle: const TextStyle(
                                       fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.w400,
@@ -121,6 +154,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         children: [
                           Center(
                             child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AddNewProductScreen(
+                                      product: homeprovider[index],
+                                    ),
+                                  ),
+                                );
+                              },
                               onLongPress: () {
                                 Navigator.push(
                                   context,
@@ -200,9 +243,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                                         child: IconButton(
                                                           onPressed: () {
                                                             ref
-                                                                .read(homescreenprovider
+                                                                .read(homeScreenProvider
                                                                     .notifier)
-                                                                .deleteproductfromdb(
+                                                                .deleteProducts(
                                                                     homeprovider[
                                                                         index]);
                                                           },
@@ -286,7 +329,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                                   child: Column(
                                                     children: [
                                                       Text(
-                                                        'NGN${homeprovider[index].price}',
+                                                        'Rs.${homeprovider[index].soldprice}',
                                                         style: const TextStyle(
                                                             overflow:
                                                                 TextOverflow
@@ -313,7 +356,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                                             const EdgeInsets
                                                                     .only(
                                                                 right: 8.0),
-                                                        child: Container(
+                                                        child: SizedBox(
                                                             width: 30,
                                                             child: Text(
                                                               homeprovider[

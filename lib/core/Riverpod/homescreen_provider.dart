@@ -1,12 +1,14 @@
-import 'package:coffeeproject/core/Model/productmodel.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../Service/firebase_service.dart';
+import '../models/product/product.dart';
 
 
 
 
-final homescreenprovider =
+final homeScreenProvider =
     StateNotifierProvider< HomeScreenNotifier, List<Product>>((ref) =>  HomeScreenNotifier());
 
 
@@ -14,42 +16,49 @@ class HomeScreenNotifier
  extends StateNotifier<List<Product>> {
    HomeScreenNotifier([List<Product>? intialTodos]) : super(intialTodos ?? []);
  final firebaseservice = Firebaseservice();
+final FirebaseFirestore _db = FirebaseFirestore.instance;
+final String _productcollection = 'product';
 
+  get length => null;
   void addProduct(Product product) {
     state = [...state, product];
-  firebaseservice.addproducttofirestore(product);
+  firebaseservice.addProductsToDB(product);
   }
 
- Future<void> fetchtaskfromfirestoredb( {String? query}) async{
-    state=await firebaseservice.fetchproductsFromFirebase();
-  if(query!.isEmpty){
-        state=await firebaseservice.fetchproductsFromFirebase();
- 
-  }else{
+ Future<void> fetchProducts() async{
+    state=await firebaseservice.fetchProductsFromDB();
   
-     state=await firebaseservice.searchproducts(query);
-  }
 
  }
 
-  void deleteproductfromdb(Product product) async {
+  void deleteProducts(Product product) async {
     state = state.where((element) => element.id != product.id).toList();
-    await firebaseservice.deleteproductfromdb(product);
+    await firebaseservice.deleteProductsFromDB(product);
   }
-//  Future<void> searchproducts(String query ) async{
-  
-//   state=await firebaseservice.searchproducts(query);
-//  }
+ Future<void> searchProducts(String query) async {
+    try {
+      var snapshot = await _db
+          .collection(_productcollection) 
+          .where('category', isEqualTo: query.toLowerCase())
+          .get();
 
-  // void updatedtask(Product product) async {
-  //   List<Product> newlist = [...state];
-  //   int index = newlist.indexWhere((element) => element.id == product.id);
-  //   if (index != -1) {
-  //     newlist[index] = product;
-  //   }
-  //   state = newlist;
+      state = snapshot.docs.map((doc) => Product.fromJson(doc.data())).toList();
+    } catch (error) {
+    print(error);
+    }
+  }
+  Future<void> updatedProduct(Product product,) async {
+    List<Product> newlist = [...state];
+    int index = newlist.indexWhere((element) => element.id == product.id);
+    if (index != -1) {
+      newlist[index] = product;
+    }
+    state = newlist;
+    await firebaseservice.updateProductsFromDB(product);
     
-  // }
+  }
+}
+  
 
   
-}
+

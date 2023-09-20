@@ -1,12 +1,14 @@
-import 'package:coffeeproject/core/Model/productmodel.dart';
-
+import 'package:coffeeproject/core/riverpod/adjustquantity_provider.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import '../../core/models/product/product.dart';
+import '../../core/riverpod/dashboard_screen_providers/monthlyfinance_provider.dart';
 
+import '../../core/riverpod/dashboard_screen_providers/piegraph_provider.dart';
 import '../../widgets/custom_text.dart';
-import '../Cart_Screen/cart_screen.dart';
 
 // ignore: must_be_immutable
 class DetailScreen extends ConsumerStatefulWidget {
@@ -23,6 +25,9 @@ class DetailScreen extends ConsumerStatefulWidget {
 class _DetailScreenState extends ConsumerState<DetailScreen> {
   @override
   Widget build(BuildContext context) {
+    List<Product> monthlyFinance = ref.watch(monthlyFinanceProvider);
+
+    final provider = ref.watch(adjustQuantityprovider);
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
@@ -45,11 +50,11 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                       IconButton(
                         iconSize: 24,
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CartScreen(),
-                              ));
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) => CartScreen(),
+                          //     ));
                         },
                         icon: const Icon(
                           Icons.shopping_bag_outlined,
@@ -111,18 +116,16 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                 height: 20,
               ),
               SizedBox(
-                 
-                    child: Text(DateFormat('d - M - yyyy h:mm a ')
-                        .format(widget.product.date)),
-                  ),
-                   const SizedBox(
+                child: Text(DateFormat('d - M - yyyy h:mm a ')
+                    .format(DateTime.fromMillisecondsSinceEpoch(widget.product.createdatdate))),
+              ),
+              const SizedBox(
                 height: 20,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
-                
                     width: 210,
                     child: Text(
                       widget.product.category.toString(),
@@ -133,7 +136,6 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                           fontWeight: FontWeight.w700),
                     ),
                   ),
-                  
                 ],
               ),
               const SizedBox(
@@ -148,19 +150,68 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                 height: 14,
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Icon(
-                    Icons.star,
-                    color: Colors.amber,
-                    size: 16,
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                        size: 16,
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      customText(Colors.black, widget.product.rating.toString(),
+                          FontWeight.w600, 12),
+                      customText(const Color(0xff828282), '(2500 reviews)',
+                          FontWeight.w500, 12),
+                    ],
                   ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  customText(Colors.black, widget.product.rating.toString(),
-                      FontWeight.w600, 12),
-                  customText(const Color(0xff828282), '(2500 reviews)',
-                      FontWeight.w500, 12),
+                  Container(
+                    height: 30,
+                    width: 116,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color: Colors.white,
+                        boxShadow: const [
+                          BoxShadow(
+                              blurRadius: 0.5, blurStyle: BlurStyle.normal)
+                        ]),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        IconButton(
+                          icon: const Icon(
+                            Icons.minimize,
+                            size: 13,
+                          ),
+                          onPressed: () {
+                            ref
+                                .read(adjustQuantityprovider.notifier)
+                                .decreseSegmentedValue();
+                          },
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(top: 6),
+                          child: Text('${provider.quantity}'),
+                        ),
+                        IconButton(
+                          icon: const Icon(
+                            Icons.add,
+                            size: 14,
+                          ),
+                          onPressed: () {
+                            ref
+                                .read(adjustQuantityprovider.notifier)
+                                .increseSegmentedValue(
+                                    widget.product.totalquantity,
+                                    widget.product.soldquantity);
+                          },
+                        )
+                      ],
+                    ),
+                  )
                 ],
               ),
               const SizedBox(
@@ -180,14 +231,15 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                 children: [
                   customText(Colors.black, 'Description', FontWeight.w600, 16),
                   SizedBox(
-                    height: 120,
+                    height: 160,
                     child: ExpandableText(
                       widget.product.description.toString(),
                       expandText: 'Read more',
                       collapseText: 'Read less',
                       maxLines: 3,
                       style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: 14,
+                          overflow: TextOverflow.ellipsis,
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.normal,
                           color: Color(0xff828282)),
@@ -196,10 +248,9 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                 ],
               ),
               const SizedBox(
-                height: 32,
+                height: 20,
               ),
               Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
@@ -210,7 +261,7 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                         padding: const EdgeInsets.only(left: 8.0),
                         child: customText(
                             const Color(0xff828282),
-                            'NGN${widget.product.price.toString()}',
+                            'Rs.${widget.product.soldprice.toString()}',
                             FontWeight.w700,
                             16),
                       ),
@@ -220,35 +271,81 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                     height: 30,
                     width: 108,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.blueGrey,
                         boxShadow: const [
                           BoxShadow(
                               blurRadius: 0.5, blurStyle: BlurStyle.normal)
                         ]),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        IconButton(
-                          icon: const Icon(
-                            Icons.minimize,
-                            size: 14,
-                          ),
-                          onPressed: () {},
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(top: 6),
-                          child: const Text('2'),
-                        ),
-                        IconButton(
-                          icon: const Icon(
-                            Icons.add,
-                            size: 18,
-                          ),
-                          onPressed: () {},
-                        )
-                      ],
-                    ),
+                    child: TextButton(
+                        onPressed: () {
+                          if (monthlyFinance.contains(widget.product)) {
+                            if (widget.product.soldquantity >=
+                                widget.product.totalquantity) {
+                              Fluttertoast.showToast(
+                                  msg: 'Cannot buy, already sold all',
+                                  backgroundColor: Colors.red);
+                            } else {
+                             
+                              ref
+                                  .read(pieGraphProvider.notifier)
+                                  .updateDateSoldProducts(
+                                      widget.product.id,DateTime.now());
+                                       ref
+                                  .read(monthlyFinanceProvider.notifier)
+                                  .updatedDateSoldProducts(
+                                      widget.product.id,DateTime.now());
+                              ref
+                                  .read(adjustQuantityprovider.notifier)
+                                  .updateSoldQuantity(widget.product.id,
+                                      widget.product.soldquantity);
+                                  
+                                  
+                              ref
+                                  .read(adjustQuantityprovider.notifier)
+                                  .resetquentity();
+                              Fluttertoast.showToast(
+                                  msg: ' Buy a product',
+                                  backgroundColor: Colors.red);
+                            }
+                          } else {
+                           
+                            ref
+                                .read(adjustQuantityprovider.notifier)
+                                .updateSoldQuantity(widget.product.id,
+                                    widget.product.soldquantity);
+                                
+
+                            ref
+                                .read(pieGraphProvider.notifier)
+                                .addSoldProduct(widget.product);
+                              ref
+                                .read(monthlyFinanceProvider.notifier)
+                                .addSoldProducts(widget.product);
+                         
+                                 ref
+                                  .read(monthlyFinanceProvider.notifier)
+                                  .updatedDateSoldProducts(
+                                      widget.product.id, DateTime.now(),);
+                                      ref
+                                  .read(pieGraphProvider.notifier)
+                                  .updateDateSoldProducts(
+                                      widget.product.id, DateTime.now(),);
+                          
+                            ref
+                                .read(adjustQuantityprovider.notifier)
+                                .resetquentity();
+
+                            Fluttertoast.showToast(
+                                msg: 'Buy a product',
+                                backgroundColor: Colors.red);
+                          }
+                        },
+                        child: const Center(
+                            child: Text(
+                          'Buy',
+                          style: TextStyle(color: Colors.white),
+                        ))),
                   )
                 ],
               ),

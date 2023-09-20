@@ -22,13 +22,13 @@ class AppBarText extends StatelessWidget {
                   color: Colors.white,
                   size: 38,
                 ),
-                customText(Colors.white, 'Coffee',
+                customText(Colors.white, 'Products',
                     FontWeight.w800, 24)
               ],
             ),
             customText(
                 Colors.white,
-                'Arabica, Robusta, Excelsa and Liberica.',
+                'Fruits Devices Shoes and Furniture etc.',
                 FontWeight.normal,
                 12)
           ],

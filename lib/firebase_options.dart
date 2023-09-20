@@ -28,10 +28,7 @@ class DefaultFirebaseOptions {
           'you can reconfigure this by running the FlutterFire CLI again.',
         );
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -50,20 +47,30 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDx6clqZiYkiDaEEHVP2YjSWPTwikg-i8E',
-    appId: '1:587596448244:web:a593ab5c56f5b9263e79a1',
-    messagingSenderId: '587596448244',
-    projectId: 'coffee-eaf96',
-    authDomain: 'coffee-eaf96.firebaseapp.com',
-    storageBucket: 'coffee-eaf96.appspot.com',
-    measurementId: 'G-T7DSK54EV8',
+    apiKey: 'AIzaSyAwGRtoz_3Kgury9CTp4sETZZ4jtsV0XT8',
+    appId: '1:1000630616489:web:2fb0022aac0c81533b44b8',
+    messagingSenderId: '1000630616489',
+    projectId: 'product-292cd',
+    authDomain: 'product-292cd.firebaseapp.com',
+    storageBucket: 'product-292cd.appspot.com',
+    measurementId: 'G-RY5V0BC7QH',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDEvty5sG9uarfASbJNWiLTYkM-dTUDD00',
-    appId: '1:587596448244:android:3bb4d262c42926943e79a1',
-    messagingSenderId: '587596448244',
-    projectId: 'coffee-eaf96',
-    storageBucket: 'coffee-eaf96.appspot.com',
+    apiKey: 'AIzaSyBvMj0q5rpcM7ioEL0tKrIqYS009mpW1FY',
+    appId: '1:1000630616489:android:a70e8ebbc2acfc7c3b44b8',
+    messagingSenderId: '1000630616489',
+    projectId: 'product-292cd',
+    storageBucket: 'product-292cd.appspot.com',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyDgQIuxi2mQftNvCKDGIkps792I_EvHmA8',
+    appId: '1:1000630616489:ios:a2ee7621c79f5f3c3b44b8',
+    messagingSenderId: '1000630616489',
+    projectId: 'product-292cd',
+    storageBucket: 'product-292cd.appspot.com',
+    iosClientId: '1000630616489-3fmj99juiun05il5j59v83t37o7bmrtq.apps.googleusercontent.com',
+    iosBundleId: 'com.example.coffeeproject.RunnerTests',
   );
 }
