@@ -3,7 +3,6 @@ import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
 import '../../core/models/product/product.dart';
 import '../../core/riverpod/dashboard_screen_providers/monthlyfinance_provider.dart';
 
@@ -50,11 +49,6 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                       IconButton(
                         iconSize: 24,
                         onPressed: () {
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //       builder: (context) => CartScreen(),
-                          //     ));
                         },
                         icon: const Icon(
                           Icons.shopping_bag_outlined,
@@ -115,10 +109,10 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
               const SizedBox(
                 height: 20,
               ),
-              SizedBox(
-                child: Text(DateFormat('d - M - yyyy h:mm a ')
-                    .format(DateTime.fromMillisecondsSinceEpoch(widget.product.createdatdate))),
-              ),
+              // SizedBox(
+              //   child: Text(DateFormat('d - M - yyyy h:mm a ')
+              //       .format(DateTime.fromMillisecondsSinceEpoch(widget.product.timestamp.toDate()))),
+              // ),
               const SizedBox(
                 height: 20,
               ),

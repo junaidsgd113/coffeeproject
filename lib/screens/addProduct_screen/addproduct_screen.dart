@@ -1,4 +1,3 @@
-import 'package:coffeeproject/core/Service/firestorage_service.dart';
 import 'package:coffeeproject/core/models/category/category.dart';
 import 'package:coffeeproject/core/riverpod/categoryscreen_provider.dart';
 import 'package:coffeeproject/core/riverpod/homescreen_provider.dart';
@@ -7,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import '../../core/models/product/product.dart';
+import '../../core/service/firestorage_service.dart';
 import '../../widgets/custom_text.dart';
 import '../../widgets/custom_textfield.dart';
 
@@ -25,8 +25,6 @@ class AddNewProductScreen extends ConsumerStatefulWidget {
 }
 
 class _AddNewProductScreenState extends ConsumerState<AddNewProductScreen> {
-
-
   TextEditingController categoryController = TextEditingController();
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -168,14 +166,15 @@ class _AddNewProductScreenState extends ConsumerState<AddNewProductScreen> {
                         height: 12,
                       ),
                       Container(
-                        height: 50,
+                        height: 54,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: Colors.white,
                         ),
                         child: DropdownButtonFormField<Category>(
                           menuMaxHeight: 200,
-                          dropdownColor: Colors.blue,
+                          
+                          dropdownColor: Colors.white,
                           // itemHeight: 20,
                           decoration: InputDecoration(
                               border: OutlineInputBorder(
@@ -218,7 +217,6 @@ class _AddNewProductScreenState extends ConsumerState<AddNewProductScreen> {
                                     borderRadius: BorderRadius.circular(10)),
                                 child: TextButton(
                                   onPressed: () async {
-                                  
                                     await ref
                                         .read(imageProvider.notifier)
                                         .imagePicker();
@@ -245,10 +243,10 @@ class _AddNewProductScreenState extends ConsumerState<AddNewProductScreen> {
                                     color: Colors.brown,
                                     borderRadius: BorderRadius.circular(10)),
                                 child: TextButton(
-                                  onPressed: ()  async{
+                                  onPressed: () async {
                                     var randomid = const Uuid().v1();
                                     final firebase = FireStorageService();
-                                    final imageUrl =await firebase.uploadImage(
+                                    final imageUrl = await firebase.uploadImage(
                                         selectimage!, randomid);
                                     Product newproduct = Product(
                                       category:
@@ -267,9 +265,7 @@ class _AddNewProductScreenState extends ConsumerState<AddNewProductScreen> {
                                       id: widget.product == null
                                           ? randomid
                                           : widget.product?.id ?? '',
-                                      image: imageUrl.toString(),
-                                      createdatdate:
-                                          DateTime.now().millisecondsSinceEpoch,
+                                      image: imageUrl,
                                     );
                                     (widget.product == null)
                                         ? ref
@@ -308,6 +304,7 @@ class _AddNewProductScreenState extends ConsumerState<AddNewProductScreen> {
                                       widget.product?.image ?? '',
                                       height: 70,
                                       width: 100,
+                                      scale: 1,
                                       fit: BoxFit.cover,
                                     )
                                   : (selectimage != null)
@@ -315,6 +312,7 @@ class _AddNewProductScreenState extends ConsumerState<AddNewProductScreen> {
                                           selectimage,
                                           height: 70,
                                           width: 100,
+                                          scale: 1,
                                           fit: BoxFit.cover,
                                         )
                                       : const SizedBox(),

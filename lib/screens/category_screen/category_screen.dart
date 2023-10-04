@@ -36,7 +36,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
         )),
       ),
       body: Padding(
-          padding: const EdgeInsets.only( left: 24, right: 23,),
+          padding:  const EdgeInsets.symmetric(horizontal: 16),
           child: Center(
             child: SizedBox(
               width: 500,

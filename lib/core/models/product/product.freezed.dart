@@ -28,8 +28,8 @@ mixin _$Product {
   int? get actualprice => throw _privateConstructorUsedError;
   String? get image => throw _privateConstructorUsedError;
   double? get rating => throw _privateConstructorUsedError;
-  String? get description => throw _privateConstructorUsedError;
-  int get createdatdate => throw _privateConstructorUsedError;
+  String? get description =>
+      throw _privateConstructorUsedError; // required  int  createdatdate,
   String get id => throw _privateConstructorUsedError;
   @TimestampConverter()
   dynamic get timestamp => throw _privateConstructorUsedError;
@@ -54,7 +54,6 @@ abstract class $ProductCopyWith<$Res> {
       String? image,
       double? rating,
       String? description,
-      int createdatdate,
       String id,
       @TimestampConverter() dynamic timestamp});
 }
@@ -81,7 +80,6 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
     Object? image = freezed,
     Object? rating = freezed,
     Object? description = freezed,
-    Object? createdatdate = null,
     Object? id = null,
     Object? timestamp = freezed,
   }) {
@@ -122,10 +120,6 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
-      createdatdate: null == createdatdate
-          ? _value.createdatdate
-          : createdatdate // ignore: cast_nullable_to_non_nullable
-              as int,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -155,7 +149,6 @@ abstract class _$$_productCopyWith<$Res> implements $ProductCopyWith<$Res> {
       String? image,
       double? rating,
       String? description,
-      int createdatdate,
       String id,
       @TimestampConverter() dynamic timestamp});
 }
@@ -179,7 +172,6 @@ class __$$_productCopyWithImpl<$Res>
     Object? image = freezed,
     Object? rating = freezed,
     Object? description = freezed,
-    Object? createdatdate = null,
     Object? id = null,
     Object? timestamp = freezed,
   }) {
@@ -220,10 +212,6 @@ class __$$_productCopyWithImpl<$Res>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
-      createdatdate: null == createdatdate
-          ? _value.createdatdate
-          : createdatdate // ignore: cast_nullable_to_non_nullable
-              as int,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -246,7 +234,6 @@ class _$_product implements _product {
       this.image,
       this.rating,
       this.description,
-      required this.createdatdate,
       required this.id,
       @TimestampConverter() this.timestamp});
 
@@ -272,8 +259,7 @@ class _$_product implements _product {
   final double? rating;
   @override
   final String? description;
-  @override
-  final int createdatdate;
+// required  int  createdatdate,
   @override
   final String id;
   @override
@@ -282,7 +268,7 @@ class _$_product implements _product {
 
   @override
   String toString() {
-    return 'Product(category: $category, totalquantity: $totalquantity, soldquantity: $soldquantity, title: $title, soldprice: $soldprice, actualprice: $actualprice, image: $image, rating: $rating, description: $description, createdatdate: $createdatdate, id: $id, timestamp: $timestamp)';
+    return 'Product(category: $category, totalquantity: $totalquantity, soldquantity: $soldquantity, title: $title, soldprice: $soldprice, actualprice: $actualprice, image: $image, rating: $rating, description: $description, id: $id, timestamp: $timestamp)';
   }
 
   @override
@@ -305,8 +291,6 @@ class _$_product implements _product {
             (identical(other.rating, rating) || other.rating == rating) &&
             (identical(other.description, description) ||
                 other.description == description) &&
-            (identical(other.createdatdate, createdatdate) ||
-                other.createdatdate == createdatdate) &&
             (identical(other.id, id) || other.id == id) &&
             const DeepCollectionEquality().equals(other.timestamp, timestamp));
   }
@@ -324,7 +308,6 @@ class _$_product implements _product {
       image,
       rating,
       description,
-      createdatdate,
       id,
       const DeepCollectionEquality().hash(timestamp));
 
@@ -353,7 +336,6 @@ abstract class _product implements Product {
       final String? image,
       final double? rating,
       final String? description,
-      required final int createdatdate,
       required final String id,
       @TimestampConverter() final dynamic timestamp}) = _$_product;
 
@@ -377,9 +359,7 @@ abstract class _product implements Product {
   double? get rating;
   @override
   String? get description;
-  @override
-  int get createdatdate;
-  @override
+  @override // required  int  createdatdate,
   String get id;
   @override
   @TimestampConverter()

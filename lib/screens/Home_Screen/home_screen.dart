@@ -83,7 +83,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         color: Colors.black,
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 24, right: 24),
+                        padding: const EdgeInsets.only(left: 16, right: 16),
                         child: Column(
                           children: [
                             const SizedBox(
@@ -130,7 +130,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
               ),
               SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 sliver: SliverGrid(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: (MediaQuery.of(context).size.width < 500)

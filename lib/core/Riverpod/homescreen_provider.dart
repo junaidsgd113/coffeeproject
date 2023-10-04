@@ -11,7 +11,7 @@ class HomeScreenNotifier extends StateNotifier<List<Product>> {
   HomeScreenNotifier([List<Product>? intialTodos]) : super(intialTodos ?? []);
   final firebaseservice = Firebaseservice();
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-  final String _productcollection = 'product';
+  final String _productcollection = 'products';
 
   get length => null;
   void addProduct(Product product) {
@@ -41,9 +41,7 @@ class HomeScreenNotifier extends StateNotifier<List<Product>> {
     }
   }
 
-  Future<void> updatedProduct(
-    Product product,
-  ) async {
+  Future<void> updatedProduct(Product product) async {
     List<Product> newlist = [...state];
     int index = newlist.indexWhere((element) => element.id == product.id);
     if (index != -1) {

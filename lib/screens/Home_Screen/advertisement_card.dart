@@ -11,7 +11,7 @@ class AdvertisementCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding:
-          const EdgeInsets.only(top: 200.0, left: 24, right: 24),
+          const EdgeInsets.only(top: 200.0, left: 16, right: 16),
       child: Container(
         height: 180,
         width: double.infinity,
@@ -50,7 +50,7 @@ class AdvertisementCard extends StatelessWidget {
                                 FontWeight.w600,
                                 14)),
                       ),
-                    customText(Colors.black, 'Buy one get one Free', FontWeight.w900, 24),
+                    customText(Colors.black, 'Buy one get  one Free', FontWeight.w900, 24),
                       
                     ],
                   ),

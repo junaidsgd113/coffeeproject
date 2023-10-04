@@ -16,7 +16,6 @@ _$_product _$$_productFromJson(Map<String, dynamic> json) => _$_product(
       image: json['image'] as String?,
       rating: (json['rating'] as num?)?.toDouble(),
       description: json['description'] as String?,
-      createdatdate: json['createdatdate'] as int,
       id: json['id'] as String,
       timestamp: json['timestamp'],
     );
@@ -32,7 +31,6 @@ Map<String, dynamic> _$$_productToJson(_$_product instance) =>
       'image': instance.image,
       'rating': instance.rating,
       'description': instance.description,
-      'createdatdate': instance.createdatdate,
       'id': instance.id,
       'timestamp': instance.timestamp,
     };

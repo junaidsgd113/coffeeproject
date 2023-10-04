@@ -77,7 +77,7 @@ class Firebaseservice {
   Future<void> addSoldProductToDB(
     Product product,
   ) async {
-    DateTime date = DateTime(2023, 1, 10);
+    DateTime date = DateTime.now();
     await _db
         .collection(soldproductcollection)
         .doc(DateFormat('yyyy').format(date))

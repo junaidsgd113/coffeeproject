@@ -14,7 +14,7 @@ class Product with _$Product {
   String? image,
   double? rating,
   String? description,
-  required  int  createdatdate,
+  // required  int  createdatdate,
  required  String id,
 
  @TimestampConverter() timestamp,

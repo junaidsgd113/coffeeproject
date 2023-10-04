@@ -5,6 +5,7 @@ class FireStorageService {
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
   Future<String> uploadImage(Uint8List imageBytes, String imageName) async {
+    print('upload function');
     try {
       final Reference storageRef = _storage.ref().child('images/$imageName');
       final UploadTask uploadTask = storageRef.putData(imageBytes);
